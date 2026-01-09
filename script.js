@@ -221,15 +221,15 @@ window.addEventListener('load', () => {
                 showNextSlide();
             };
         } else {
-            // Video yoksa: Fiyat tarifesi (index 0) için 45 saniye, diğerleri için 5 saniye
-            const waitTime = currentSlideIndex === 0 ? 45000 : 5000;
+            // Video yoksa: Fiyat tarifesi (index 0) için 30 saniye, diğerleri için 5 saniye
+            const waitTime = currentSlideIndex === 0 ? 30000 : 5000;
             slideTimeout = setTimeout(showNextSlide, waitTime);
         }
     }
 
     // Başlatma
     if (slides.length > 0) {
-        // İlk başta Content slide (index 0) aktif, 45 sn sonra video'ya geçecek
-        slideTimeout = setTimeout(showNextSlide, 45000);
+        // İlk başta Content slide (index 0) aktif, 30 sn sonra video'ya geçecek
+        slideTimeout = setTimeout(showNextSlide, 30000);
     }
 });
