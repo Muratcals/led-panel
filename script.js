@@ -89,8 +89,11 @@ window.addEventListener('load', () => {
             src = sourceTag.src;
         }
 
+        // localVideo için cache mekanizmasını atla (üst slider'da sorun yaratıyor)
+        const isTopVideo = v.id === 'localVideo';
+
         // Pre-fetch and cache if src exists
-        if (src && !src.startsWith('blob:')) {
+        if (src && !src.startsWith('blob:') && !isTopVideo) {
             console.log(`CACHE START: Downloading video... ${src}`); // LOG: Başlangıç
 
             fetch(src)
@@ -134,6 +137,7 @@ window.addEventListener('load', () => {
     const topVideo = document.getElementById('localVideo');
     let currentTopSlideIndex = 0;
     let topSlideTimeout;
+    let topSliderStarted = false; // Slider başladı mı kontrolü
 
     function showNextTopSlide() {
         if (topSlides.length === 0) return;
@@ -149,33 +153,28 @@ window.addEventListener('load', () => {
         // 3. Yeni slide'ı göster
         nextTopSlide.classList.add('active');
 
-        // 4. Eğer reklam sayfasına geçildiyse 15 saniye bekle
-        // Eğer video sayfasına geçildiyse, video bitene kadar bekle
+        // 4. Süre ayarla
         if (currentTopSlideIndex === 0 && topVideo) {
             // Video sayfası - videoyu başlat ve bitene kadar bekle
             topVideo.currentTime = 0;
             topVideo.play().catch(e => console.log("Top video play error:", e));
-
-            // Video bitince reklam sayfasına geç
-            const onVideoEnd = () => {
-                showNextTopSlide();
-                topVideo.removeEventListener('ended', onVideoEnd);
-            };
-            topVideo.addEventListener('ended', onVideoEnd);
+            console.log("Video tekrar başlatıldı, bitince reklam alanına geçilecek...");
         } else {
             // Reklam sayfası - 15 saniye bekle
+            console.log("Reklam alanı gösteriliyor, 15 saniye beklenecek...");
             topSlideTimeout = setTimeout(showNextTopSlide, 15000);
         }
     }
 
-    // Üst slider başlatma
+    // Üst slider başlatma - Video bitince otomatik başlat
     if (topSlides.length > 0 && topVideo) {
-        // İlk slayt video, video bitince reklam sayfasına geç
-        const onFirstVideoEnd = () => {
+        console.log("Üst slider başlatılıyor...");
+        // Video her bittiğinde bir sonraki slide'a geç
+        topVideo.onended = () => {
+            console.log("Video bitti, sonraki slide'a geçiliyor...");
+            topSliderStarted = true; // Slider artık aktif
             showNextTopSlide();
-            topVideo.removeEventListener('ended', onFirstVideoEnd);
         };
-        topVideo.addEventListener('ended', onFirstVideoEnd);
     }
 
     // Alt Slideshow Döngüsü (Fiyat Tarifesi & Videolar)
