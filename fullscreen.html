@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED Panel - Tam Ekran (Dikey)</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Tam ekran modu için ek stiller */
+        body {
+            cursor: none; /* İmleci gizle */
+        }
+        
+        .fullscreen-btn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: rgba(0, 212, 255, 0.9);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .fullscreen-btn:hover {
+            background: #00a8cc;
+            transform: scale(1.05);
+        }
+        
+        .fullscreen-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Tam ekran modunda butonu gizle */
+        body:fullscreen .fullscreen-btn,
+        body:-webkit-full-screen .fullscreen-btn,
+        body:-moz-full-screen .fullscreen-btn {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Tam Ekran Butonu -->
+    <button class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()">
+        🖥️ TAM EKRAN
+    </button>
+
+    <!-- Üst Bilgi Paneli -->
+    <div class="info-panel">
+        <div class="info-container">
+            <!-- Araç Bilgileri -->
+            <div class="vehicle-info" id="vehicleInfo">
+                <div class="plate-number" id="plateNumber">34ABC123</div>
+                <div class="hgs-amount" id="hgsAmount">HGS-123 TL</div>
+            </div>
+            
+            <!-- Hoşgeldiniz Mesajı -->
+            <div class="welcome-message" id="welcomeMessage">
+                <div class="line1">Otopark'a</div>
+                <div class="line2">HOŞGELDİNİZ</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alt Reklam Paneli -->
+    <div class="ad-panel">
+        <div class="ad-slider">
+            <div class="ad-slide active">
+                <img src="images/ad1.jpg" alt="Reklam 1" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #667eea 0%, #764ba2 100%)'">
+                <div class="ad-overlay">
+                    <h2>Hoş Geldiniz!</h2>
+                    <p>STAY PARK Otopark Sistemi</p>
+                </div>
+            </div>
+            <div class="ad-slide">
+                <img src="images/ad2.jpg" alt="Reklam 2" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'">
+                <div class="ad-overlay">
+                    <h2>Özel Kampanya</h2>
+                    <p>Aylık Abonelikte %20 İndirim</p>
+                </div>
+            </div>
+            <div class="ad-slide">
+                <img src="images/ad3.jpg" alt="Reklam 3" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'">
+                <div class="ad-overlay">
+                    <h2>Güvenli Park</h2>
+                    <p>7/24 Kamera Sistemi</p>
+                </div>
+            </div>
+            <div class="ad-slide">
+                <img src="images/ad4.jpg" alt="Reklam 4" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'">
+                <div class="ad-overlay">
+                    <h2>Mobil Ödeme</h2>
+                    <p>QR Kod ile Hızlı Ödeme</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slayt Göstergeleri -->
+        <div class="slider-dots">
+            <span class="dot active" data-slide="0"></span>
+            <span class="dot" data-slide="1"></span>
+            <span class="dot" data-slide="2"></span>
+            <span class="dot" data-slide="3"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Tam ekran fonksiyonu
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert(`Tam ekran modu etkinleştirilemedi: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+        
+        // ESC tuşu ile çıkış bildirimi
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                console.log('Tam ekran modundan çıkıldı');
+            }
+        });
+        
+        // Sayfa yüklendiğinde otomatik tam ekran (isteğe bağlı)
+        // window.addEventListener('load', () => {
+        //     setTimeout(() => {
+        //         toggleFullscreen();
+        //     }, 1000);
+        // });
+    </script>
+</body>
+</html>

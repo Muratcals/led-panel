@@ -89,6 +89,160 @@ body {
     padding-left: 30px;
 }
 
+/* Slide 3: Promo (Video + Text) - Overlay Layout */
+.promo-slide {
+    position: relative;
+    background: #000;
+}
+
+.promo-video-part {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.promo-video-part video {
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    /* Videoyu tam ekrana yay */
+}
+
+.promo-text-part {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Tam ortala */
+    width: 80%;
+    /* Genişlik sınırı */
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.6);
+    /* Okunabilirlik için yarı saydam siyah fon */
+    backdrop-filter: blur(5px);
+    /* Modern blur efekti */
+    padding: 40px;
+    border-radius: 30px;
+    color: #fff;
+    text-align: center;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.promo-text-part h3 {
+    font-size: 80px;
+    color: #fff;
+    /* Başlık beyaz */
+    margin-bottom: 20px;
+    font-weight: 900;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.promo-text-part p {
+    font-size: 35px;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    color: #eee;
+    font-weight: 500;
+}
+
+.promo-text-part .features {
+    font-size: 30px;
+    color: #4da6ff;
+    /* Açık mavi */
+    font-weight: 700;
+    margin-top: 10px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Animations */
+.slide.active .slide-in-text {
+    animation: slideInUp 0.8s ease-out forwards;
+}
+
+.slide.active .fade-in-text {
+    opacity: 0;
+    animation: fadeInText 1.0s ease-out 0.5s forwards;
+}
+
+.slide.active .fade-in-text.delay {
+    animation-delay: 1.0s;
+}
+
+.slide.active .fade-in-text.delay-2 {
+    animation-delay: 1.5s;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.promo-url {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    color: #0055ff;
+    background: #fff;
+    padding: 50px 0;
+    /* 50px genişlik isteği */
+    border-radius: 0;
+    font-size: 75px;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    /* Filigran taşmasın */
+}
+
+/* Filigran / Işıltı Efekti */
+.promo-url::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+
+    50% {
+        left: 100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
 /* Slide 2: Video */
 .video-slide {
     background: #000;
@@ -334,29 +488,10 @@ body {
     max-width: 70%;
 }
 
-.footer-logo {
-
-    margin-left: 300px;
-    gap: 100px;
-
-    /* İkonlar arası boşluk */
-}
-
-.hgs-icon {
-    height: auto;
-    /* 60 -> 100 */
-    width: auto;
-}
-
-.pos-icon {
-    height: auto;
-    /* 50 -> 85 */
-    width: auto;
-}
-
 .metropark-logo {
     /* Base height increased if set here, currently scaling in media query mostly */
     height: 200px;
+    width: 1300px;
     margin-top: 100px;
     /* Default büyütüldü */
 }
@@ -459,37 +594,42 @@ body {
     }
 
     /* Sağ taraf başlık ve fiyat listesi */
+    .header {
+        margin-bottom: 50px;
+        /* Header boşluğunu artır */
+    }
+
+    .metropark-logo {
+        height: 350px;
+        /* 200 -> 350 (Logoyu Büyüt) */
+        margin-top: 50px;
+    }
+
     .title h1 {
-        font-size: 85px;
-        /* 70 -> 85 */
+        font-size: 90px;
+        /* 85 -> 90 */
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .title h2 {
-        font-size: 60px;
-        /* 50 -> 60 */
-        letter-spacing: 8px;
-        /* Aralık arttırıldı */
+        font-size: 65px;
+        /* 60 -> 65 */
+        letter-spacing: 10px;
     }
 
     /* Fiyat listesi satırları */
     .price-row {
-        font-size: 120px;
-        /* 45 -> 55 (Daha büyük ve okunur) */
-        margin-bottom: 8px;
-        /* 5 -> 8 */
-        padding: 10px 20px;
-        /* Arkaplan için padding */
-        border-radius: 15px;
-        /* Köşeler yuvarlatıldı */
+        font-size: 110px;
+        /* 120'den biraz küçült sığsın */
+        margin-bottom: 12px;
+        padding: 15px 30px;
+        border-radius: 20px;
         border-bottom: none;
-        /* Dotted çizgiyi kaldırdık, modern görünüm */
     }
 
     /* Satırlara alternatif renk (Zebra) */
     .price-row:nth-child(odd) {
         background-color: #f8f9fa;
-        /* Hafif gri */
     }
 
     .price-row:nth-child(even) {
@@ -499,67 +639,116 @@ body {
     /* Ücretsiz satırını belirginleştir */
     .price-row.highlight {
         background-color: #e6f7e8;
-        /* Hafif yeşil ton */
         color: #2e7d32;
         font-weight: 900;
     }
 
     .price-row.highlight .price {
         color: #2e7d32;
-        /* Fiyat da yeşil */
     }
 
     /* Tam Gün satırı */
     .price-row.large {
-        font-size: 65px;
-        /* 55 -> 65 */
-        margin-top: 20px;
-        /* 15 -> 20 */
+        font-size: 80px;
+        /* 65 -> 80 */
+        margin-top: 30px;
         background-color: #003366;
-        /* Metro mavisi zemin */
         color: #fff;
-        /* Beyaz yazı */
-        border-radius: 20px;
-        padding: 20px 30px;
+        border-radius: 25px;
+        padding: 25px 40px;
         box-shadow: 0 10px 20px rgba(0, 51, 102, 0.3);
     }
 
     .price-row.large .time,
     .price-row.large .price {
         color: #fff;
-        /* İçerik de beyaz */
     }
 
     .price-list {
-        gap: 12px;
-        /* 10 -> 12 */
+        gap: 15px;
+    }
+
+    .footer {
+        margin-top: 30px;
+        padding-top: 30px;
     }
 
     .footer p {
-        font-size: 22px;
-        /* 20 -> 22 */
-        opacity: 0.7;
+        font-size: 28px;
+        /* 22 -> 28 */
+        opacity: 0.8;
     }
 
-    .footer-logo span {
-        font-size: 40px;
-        /* 35 -> 40 */
+    .footer-logo {
+        align-items: center;
     }
 
     .hgs-icon {
-        height: 100px;
-        /* 60 -> 100 */
+        height: 250px;
+        width: 400px;
+        margin-left: 50px;
+        /* 100 -> 120 */
     }
 
     .pos-icon {
-        height: 80px;
-        /* 50 -> 80 */
+        height: 250px;
+        width: 400px;
+        margin-left: 300px;
     }
 
     .tariff-content {
-        padding: 30px 50px;
-        /* 20 30 -> 30 50 (Daha ferah) */
+        padding: 40px 60px;
         background: linear-gradient(to bottom, #fff 0%, #fcfcfc 100%);
-        /* Çok hafif degrade */
+    }
+
+    /* 4K ve Full HD (1080p Dikey) için Slide 3 (Promo) Ayarları - Overlay */
+    .promo-video-part {
+        height: 100%;
+        /* Video tam ekran */
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .promo-video-part video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* Tam ekran kaplasın */
+        object-position: center;
+    }
+
+    .promo-text-part {
+        width: 85%;
+        padding: 50px 60px;
+        border-radius: 40px;
+        background: rgba(0, 0, 0, 0.5);
+        /* Biraz daha şeffaf */
+        backdrop-filter: blur(8px);
+    }
+
+    .promo-text-part h3 {
+        font-size: 130px;
+        /* Fontları 1080p'ye göre optimize ettik */
+        margin-bottom: 30px;
+        line-height: 1.1;
+    }
+
+    .promo-text-part p {
+        font-size: 65px;
+        line-height: 1.3;
+        margin-bottom: 25px;
+    }
+
+    .promo-text-part .features {
+        font-size: 55px;
+        margin-top: 20px;
+    }
+
+    .promo-url {
+        font-size: 100px;
+        padding: 70px 0;
+        /* TV için orantılı büyütme */
     }
 }

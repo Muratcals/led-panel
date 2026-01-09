@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED Panel - Demo (Dikey)</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Görsellerin tam ekran görünmesi için */
+        .ad-slide {
+            background: #fff;
+        }
+        
+        .ad-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Üst Bilgi Paneli -->
+    <div class="info-panel">
+        <div class="info-container">
+            <!-- Araç Bilgileri (başlangıçta gösteriliyor) -->
+            <div class="vehicle-info" id="vehicleInfo">
+                <div class="plate-number" id="plateNumber">34ABC123</div>
+                <div class="hgs-amount" id="hgsAmount">HGS-123 TL</div>
+            </div>
+            
+            <!-- Hoşgeldiniz Mesajı (araç geçtikten sonra gösterilecek) -->
+            <div class="welcome-message" id="welcomeMessage">
+                <div class="line1">Otopark'a</div>
+                <div class="line2">HOŞGELDİNİZ</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alt Reklam Paneli -->
+    <div class="ad-panel">
+        <div class="ad-slider">
+            <!-- Reklam 1 - Toger -->
+            <div class="ad-slide active">
+                <img src="images/toger-ad1.jpg" alt="Toger Reklam 1">
+            </div>
+            
+            <!-- Reklam 2 - Toger -->
+            <div class="ad-slide">
+                <img src="images/1702478071705.jpeg" alt="Toger Reklam 2">
+            </div>
+            
+            <!-- Reklam 3 - Toger -->
+            <div class="ad-slide">
+                <img src="images/1718468422613.jpeg" alt="Toger Reklam 3">
+            </div>
+            
+            <!-- Reklam 4 - Toger -->
+            <div class="ad-slide">
+                <img src="images/global_og_image.1d9e9a60.png" alt="Toger Reklam 4">
+            </div>
+        </div>
+        
+        <!-- Slayt Göstergeleri -->
+        <div class="slider-dots">
+            <span class="dot active" data-slide="0"></span>
+            <span class="dot" data-slide="1"></span>
+            <span class="dot" data-slide="2"></span>
+            <span class="dot" data-slide="3"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Demo için otomatik geçiş simülasyonu
+        // 3 saniye araç bilgisi göster, sonra 5 saniye hoşgeldiniz mesajı göster
+        let showingVehicle = true;
+        
+        function toggleDisplay() {
+            const vehicleInfo = document.getElementById('vehicleInfo');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            
+            if (showingVehicle) {
+                // Hoşgeldiniz mesajına geç
+                vehicleInfo.style.display = 'none';
+                welcomeMessage.classList.add('active');
+                showingVehicle = false;
+                setTimeout(toggleDisplay, 5000); // 5 saniye hoşgeldiniz göster
+            } else {
+                // Araç bilgilerine geri dön
+                welcomeMessage.classList.remove('active');
+                vehicleInfo.style.display = 'flex';
+                showingVehicle = true;
+                setTimeout(toggleDisplay, 3000); // 3 saniye araç bilgisi göster
+            }
+        }
+        
+        // İlk geçişi başlat
+        setTimeout(toggleDisplay, 3000);
+    </script>
+</body>
+</html>

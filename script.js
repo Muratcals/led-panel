@@ -138,16 +138,16 @@ window.addEventListener('load', () => {
     function showNextSlide() {
         if (slides.length === 0) return;
 
-        // 1. Mevcut slide'ı gizle ve temizle
-        slides[currentSlideIndex].classList.remove('active');
+        // 1. Mevcut slide'ı gizle
+        const currentSlide = slides[currentSlideIndex];
+        currentSlide.classList.remove('active');
 
-        // Eğer önceki slide video ise olay dinleyicisini kaldır ve durdur
-        if (slides[currentSlideIndex].classList.contains('video-slide')) {
-            if (introVideo) {
-                introVideo.pause();
-                introVideo.currentTime = 0;
-                introVideo.onended = null; // Event listener'ı temizle
-            }
+        // Önceki slayttaki videoyu bul ve durdur
+        const prevVideo = currentSlide.querySelector('video');
+        if (prevVideo) {
+            prevVideo.pause();
+            prevVideo.currentTime = 0;
+            prevVideo.onended = null; // Temizle
         }
 
         // 2. Bir sonraki indexi belirle
@@ -157,27 +157,22 @@ window.addEventListener('load', () => {
         // 3. Yeni slide'ı göster
         nextSlide.classList.add('active');
 
-        // 4. Yeni slide türüne göre bekleme mantığı
-        if (nextSlide.classList.contains('video-slide')) {
-            // Video slide ise: Video bitene kadar bekle
-            if (introVideo) {
-                // Videoyu oynat
-                introVideo.play().catch(e => {
-                    console.log("Intro play error:", e);
-                    // Hata olursa 5 sn sonra geç (Fallback)
-                    slideTimeout = setTimeout(showNextSlide, 5000);
-                });
+        // 4. Yeni slaytta video var mı?
+        const nextVideo = nextSlide.querySelector('video');
 
-                // Video bittiğinde diğer slayta geç
-                introVideo.onended = () => {
-                    showNextSlide();
-                };
-            } else {
-                // Video yoksa 5 sn bekle
+        if (nextVideo) {
+            // Video varsa: Video bitene kadar bekle
+            nextVideo.play().catch(e => {
+                console.log("Slide video play error:", e);
+                // Hata olursa 5 sn sonra geç
                 slideTimeout = setTimeout(showNextSlide, 5000);
-            }
+            });
+
+            nextVideo.onended = () => {
+                showNextSlide();
+            };
         } else {
-            // Normal içerik slide ise: 5 saniye bekle
+            // Video yoksa: 5 saniye bekle
             slideTimeout = setTimeout(showNextSlide, 5000);
         }
     }
