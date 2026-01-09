@@ -129,7 +129,56 @@ window.addEventListener('load', () => {
         }
     });
 
-    // Slideshow Döngüsü
+    // Üst Video Section Slideshow (Video <-> Reklam Alanı)
+    const topSlides = document.querySelectorAll('#topSliderContainer .top-slide');
+    const topVideo = document.getElementById('localVideo');
+    let currentTopSlideIndex = 0;
+    let topSlideTimeout;
+
+    function showNextTopSlide() {
+        if (topSlides.length === 0) return;
+
+        // 1. Mevcut slide'ı gizle
+        const currentTopSlide = topSlides[currentTopSlideIndex];
+        currentTopSlide.classList.remove('active');
+
+        // 2. Bir sonraki indexi belirle
+        currentTopSlideIndex = (currentTopSlideIndex + 1) % topSlides.length;
+        const nextTopSlide = topSlides[currentTopSlideIndex];
+
+        // 3. Yeni slide'ı göster
+        nextTopSlide.classList.add('active');
+
+        // 4. Eğer reklam sayfasına geçildiyse 15 saniye bekle
+        // Eğer video sayfasına geçildiyse, video bitene kadar bekle
+        if (currentTopSlideIndex === 0 && topVideo) {
+            // Video sayfası - videoyu başlat ve bitene kadar bekle
+            topVideo.currentTime = 0;
+            topVideo.play().catch(e => console.log("Top video play error:", e));
+
+            // Video bitince reklam sayfasına geç
+            const onVideoEnd = () => {
+                showNextTopSlide();
+                topVideo.removeEventListener('ended', onVideoEnd);
+            };
+            topVideo.addEventListener('ended', onVideoEnd);
+        } else {
+            // Reklam sayfası - 15 saniye bekle
+            topSlideTimeout = setTimeout(showNextTopSlide, 15000);
+        }
+    }
+
+    // Üst slider başlatma
+    if (topSlides.length > 0 && topVideo) {
+        // İlk slayt video, video bitince reklam sayfasına geç
+        const onFirstVideoEnd = () => {
+            showNextTopSlide();
+            topVideo.removeEventListener('ended', onFirstVideoEnd);
+        };
+        topVideo.addEventListener('ended', onFirstVideoEnd);
+    }
+
+    // Alt Slideshow Döngüsü (Fiyat Tarifesi & Videolar)
     const slides = document.querySelectorAll('#sliderContainer .slide');
     const introVideo = document.getElementById('introVideo');
     let currentSlideIndex = 0;
@@ -172,14 +221,15 @@ window.addEventListener('load', () => {
                 showNextSlide();
             };
         } else {
-            // Video yoksa: 5 saniye bekle
-            slideTimeout = setTimeout(showNextSlide, 5000);
+            // Video yoksa: Fiyat tarifesi (index 0) için 45 saniye, diğerleri için 5 saniye
+            const waitTime = currentSlideIndex === 0 ? 45000 : 5000;
+            slideTimeout = setTimeout(showNextSlide, waitTime);
         }
     }
 
     // Başlatma
     if (slides.length > 0) {
-        // İlk başta Content slide (index 0) aktif, 5 sn sonra video'ya geçecek
-        slideTimeout = setTimeout(showNextSlide, 5000);
+        // İlk başta Content slide (index 0) aktif, 45 sn sonra video'ya geçecek
+        slideTimeout = setTimeout(showNextSlide, 45000);
     }
 });
